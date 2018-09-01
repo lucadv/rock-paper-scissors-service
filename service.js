@@ -1,21 +1,23 @@
 const Hapi = require('hapi');
 const Routes = require('./server/routes');
 
-const server = Hapi.server({
-  port: process.env.PORT || 3000,
-  host: process.env.HOST || 'localhost',
-});
+const createServer = () => {
+  const server = Hapi.server({
+    port: process.env.PORT || 3000,
+    host: process.env.HOST || 'localhost',
+  });
 
-server.route(Routes);
+  server.route(Routes);
+  return server;
+};
 
 const init = async () => {
+  const server = createServer();
   await server.start();
   console.log(`Server running at: ${server.info.uri}`);
 };
 
-process.on('unhandledRejection', (err) => {
-  console.log(err);
-  process.exit(1);
-});
-
-init();
+module.exports = {
+  createServer,
+  init
+};

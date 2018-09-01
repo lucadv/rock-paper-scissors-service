@@ -22,5 +22,8 @@
     "lab": "^16.0.0",
     "lambda-tester": "^3.5.0"
   },
+  "scripts": {
+    "start": "node launch.js"
+  },
   "author": "Luca Di Vincenzo <ldivincenzo@gmail.com>"
 }
