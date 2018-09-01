@@ -1,0 +1,15 @@
+service: rock-paper-scissors-service
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  region: ${env:REGION}
+  stage: ${env:STAGE}
+
+functions:
+  pickShape:
+    handler: serverless/handlers.pickShape
+    events:
+      - http:
+          path: pick-shape
+          method: get
