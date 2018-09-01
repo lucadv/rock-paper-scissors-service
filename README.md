@@ -1,33 +1,11 @@
-# hapi-mongo-restful-service
-This is just an example with the only the purpose of demoing an rest service created using Hapi framework and Mongodb.
+## Overview
 
-The service has only one endpoint, /users, that accept the following payload structure: 
+A rest service that serves as opponent to play the game Rock, Paper, Scissors. A front-end application picks up a shape of the game and then call this service to the GET endpoint `/pick-shape` to retrieve a randomly generated shape. The endpoint returns a JSON document like the following: 
 
-```json
+```javascript
 {
-  "users": [{
-    "name": "Luca",
-    "surname": "Di Vincenzo",
-    "email": "luca.dv@gmail.com",
-    "city": "Dallas",
-    "state": "Texas",
-    "password": "verysecure"
-  }]
+  "picked": "rock"
 }
 ```
 
-The endpoint will accept POST requests with a valid payload on the address http://localhost:8010/users
-
-### Prerequisites 
-You should have nodejs v0.10.32 or above installed, plus mongodb v2.6 or above. 
-
-### Download dependencies
-npm install 
-
-### Run the server
-node service
-
-### Run tests
-./node_modules/.bin/lab -v
-make cov if you're on unix will give you coverage
-make spec if you're on unix will give a more descriptive test output
+The front-end application contains the logic to determine who wins.
