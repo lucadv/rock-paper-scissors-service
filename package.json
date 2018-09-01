@@ -1,0 +1,24 @@
+{
+  "name": "rock-paper-scissors-service",
+  "version": "1.0.0",
+  "description": "A node service which expose a rest endoint to get shapes of the game rock, paper, scissors",
+  "main": "index.js",
+  "engines": {
+    "node": "8.10.x"
+  },
+  "dependencies": {
+    "boom": "^7.2.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "hapi": "^17.5.4"
+  },
+  "devDependencies": {
+    "code": "^1.4.0",
+    "eslint": "^5.5.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.11.1",
+    "lab": "^16.0.0"
+  },
+  "author": "Luca Di Vincenzo <ldivincenzo@gmail.com>"
+}
