@@ -1,4 +1,5 @@
 const PickShape = require('../lib/pickShape');
+const PlayGame = require('../lib/playGame');
 const Validation = require('../lib/validation');
 const ErrorWrapper = require('../lib/errorWrapper');
 
@@ -13,5 +14,5 @@ module.exports = [{
       }
     }
   },
-  handler: (/* request, h */) => PickShape()
+  handler: request => PlayGame(request.query.withPlayerMove, PickShape().picked)
 }];

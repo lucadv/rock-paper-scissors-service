@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@lucadv/pickme": "^1.0.0",
+    "@lucadv/rock-paper-scissors": "^1.0.0",
     "boom": "^7.2.0",
     "eslint-config-airbnb": "^17.1.0",
     "hapi": "^17.5.4",
@@ -21,7 +22,8 @@
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.1",
     "lab": "^16.0.0",
-    "lambda-tester": "^3.5.0"
+    "lambda-tester": "^3.5.0",
+    "sinon": "^6.1.5"
   },
   "scripts": {
     "start": "node launch.js"

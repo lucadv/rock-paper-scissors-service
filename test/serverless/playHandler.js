@@ -1,11 +1,15 @@
 const Code = require('code');
 const Lab = require('lab');
+const Pickme = require('@lucadv/pickme');
+const Sinon = require('sinon');
 const LambdaTester = require('lambda-tester');
-const PickShapeHandler = require('../../serverless/handlers').play;
+const PlayHandler = require('../../serverless/handlers').play;
 
 // Test shortcuts
 
 const lab = exports.lab = Lab.script();
+const before = lab.before;
+const after = lab.after;
 const describe = lab.describe;
 const it = lab.it;
 const expect = Code.expect;
@@ -14,48 +18,116 @@ describe('Serverless tests', () => {
 
   describe('play function', () => {
 
-    describe('(with required query string parameters)', () => {
+    const event = {
+      queryString: {
+        withPlayerMove: 'rock'
+      }
+    };
 
-      const event = {
-        queryString: {
-          withPlayerMove: 'rock'
-        }
-      };
+    describe('(general)', () => {
 
-      it('should return a 200 OK statusCode', () => LambdaTester(PickShapeHandler)
+      it('should respond with 200 OK status code', () => LambdaTester(PlayHandler)
         .event(event)
         .expectResult((res) => {
           expect(res.statusCode).to.equal(200);
         }));
 
-      it('should return a body', () => LambdaTester(PickShapeHandler)
+      it('should respond a body in a serialised format', () => LambdaTester(PlayHandler)
         .event(event)
         .expectResult((res) => {
-          expect(res.body).to.exist();
+          const testFunc = () => JSON.parse(res.body);
+          expect(testFunc).to.not.throw();
         }));
 
-      it('should return a document with a picked property', () => LambdaTester(PickShapeHandler)
+      it('should respond with a document with the moves played', () => LambdaTester(PlayHandler)
         .event(event)
         .expectResult((res) => {
-          expect(JSON.parse(res.body).picked).to.exist();
+          const result = JSON.parse(res.body);
+          expect(result.moves).to.exist();
+          expect(result.moves.player1).to.equal('rock');
+          expect(['rock', 'paper', 'scissors']).to.include(result.moves.player2);
         }));
+    });
 
-      it('should return only one propery', () => LambdaTester(PickShapeHandler)
+    describe('(rock beats scissors)', () => {
+
+      before(() => Sinon.stub(Pickme.prototype, 'pickOne').returns('scissors'));
+
+      after(() => Pickme.prototype.pickOne.restore());
+
+      it('should respond with player 1 as winner', () => LambdaTester(PlayHandler)
         .event(event)
         .expectResult((res) => {
-          expect(Object.keys(JSON.parse(res.body))).to.have.length(1);
+          const result = JSON.parse(res.body);
+          expect(result.winner).to.exist();
+          expect(result.tie).to.not.exist();
+          expect(result.winner).to.equal('player 1');
+          expect(result.message).to.equal('rock beats scissors');
+          expect(result.moves.player1).to.equal('rock');
+          expect(result.moves.player2).to.equal('scissors');
         }));
+    });
 
-      it('should have a picked property which is one of rock, paper or scissors', () => LambdaTester(PickShapeHandler)
-        .event(event)
+    describe('(scissors beats paper)', () => {
+
+      before(() => Sinon.stub(Pickme.prototype, 'pickOne').returns('paper'));
+
+      after(() => Pickme.prototype.pickOne.restore());
+
+      it('should respond with player 2 as winner', () => LambdaTester(PlayHandler)
+        .event({ queryString: { withPlayerMove: 'scissors' } })
         .expectResult((res) => {
-          expect(['rock', 'paper', 'scissors']).to.include(JSON.parse(res.body).picked);
+          const result = JSON.parse(res.body);
+          expect(result.winner).to.exist();
+          expect(result.tie).to.not.exist();
+          expect(result.winner).to.equal('player 1');
+          expect(result.message).to.equal('scissors beats paper');
+          expect(result.moves.player1).to.equal('scissors');
+          expect(result.moves.player2).to.equal('paper');
+        }));
+    });
+
+    describe('(paper beats rock)', () => {
+
+      before(() => Sinon.stub(Pickme.prototype, 'pickOne').returns('rock'));
+
+      after(() => Pickme.prototype.pickOne.restore());
+
+      it('should respond with player 1 as winner', () => LambdaTester(PlayHandler)
+        .event({ queryString: { withPlayerMove: 'paper' } })
+        .expectResult((res) => {
+          const result = JSON.parse(res.body);
+          expect(result.winner).to.exist();
+          expect(result.tie).to.not.exist();
+          expect(result.winner).to.equal('player 1');
+          expect(result.message).to.equal('paper beats rock');
+          expect(result.moves.player1).to.equal('paper');
+          expect(result.moves.player2).to.equal('rock');
+        }));
+    });
+
+    describe('(tie)', () => {
+
+      before(() => Sinon.stub(Pickme.prototype, 'pickOne').returns('paper'));
+
+      after(() => Pickme.prototype.pickOne.restore());
+
+      it('should respond with tie', () => LambdaTester(PlayHandler)
+        .event({ queryString: { withPlayerMove: 'paper' } })
+        .expectResult((res) => {
+          const result = JSON.parse(res.body);
+          expect(result.winner).to.not.exist();
+          expect(result.tie).to.exist();
+          expect(result.tie).to.be.true();
+          expect(result.message).to.equal('Tie!');
+          expect(result.moves.player1).to.equal('paper');
+          expect(result.moves.player2).to.equal('paper');
         }));
     });
 
     describe('(missing required query string withPlayerMove)', () => {
 
-      it('should callback with a 400 Bad Request', () => LambdaTester(PickShapeHandler)
+      it('should callback with a 400 Bad Request', () => LambdaTester(PlayHandler)
         .event({ queryString: {} })
         .expectResult((res) => {
           expect(res.statusCode).to.equal(400);
@@ -68,7 +140,7 @@ describe('Serverless tests', () => {
 
     describe('(invalid value for query string withPlayerMove)', () => {
 
-      it('should callback with a 400 Bad Request', () => LambdaTester(PickShapeHandler)
+      it('should callback with a 400 Bad Request', () => LambdaTester(PlayHandler)
         .event({ queryString: { withPlayerMove: 'foo' } })
         .expectResult((res) => {
           expect(res.statusCode).to.equal(400);
@@ -79,7 +151,5 @@ describe('Serverless tests', () => {
           expect(result.validation).to.deep.equal({ source: 'query', keys: ['withPlayerMove'] });
         }));
     });
-
-
   });
 });

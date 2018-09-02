@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const PickShape = require('../lib/pickShape');
+const PlayGame = require('../lib/playGame');
 const Validation = require('../lib/validation');
 const ErrorWrapper = require('../lib/errorWrapper');
 
@@ -19,7 +20,7 @@ module.exports = {
     }
     callback(null, {
       statusCode: 200,
-      body: JSON.stringify(PickShape())
+      body: JSON.stringify(PlayGame(event.queryString.withPlayerMove, PickShape().picked))
     });
   }
 };
