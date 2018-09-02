@@ -10,7 +10,8 @@
     "@lucadv/pickme": "^1.0.0",
     "boom": "^7.2.0",
     "eslint-config-airbnb": "^17.1.0",
-    "hapi": "^17.5.4"
+    "hapi": "^17.5.4",
+    "joi": "^13.6.0"
   },
   "devDependencies": {
     "code": "^1.4.0",

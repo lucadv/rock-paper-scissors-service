@@ -8,8 +8,8 @@ provider:
 
 functions:
   pickShape:
-    handler: serverless/handlers.pickShape
+    handler: serverless/handlers.play
     events:
       - http:
-          path: pick-shape
+          path: play
           method: get
