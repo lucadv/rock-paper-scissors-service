@@ -6,7 +6,7 @@ const ErrorWrapper = require('../lib/errorWrapper');
 
 module.exports = {
   play: (event, context, callback) => {
-    const result = Joi.validate(event.queryString, Validation.query);
+    const result = Joi.validate(event.queryStringParameters, Validation.query);
     if (result.error) {
       const boom = ErrorWrapper(result.error).output.payload;
       return callback(null, {
@@ -20,7 +20,7 @@ module.exports = {
     }
     callback(null, {
       statusCode: 200,
-      body: JSON.stringify(PlayGame(event.queryString.withPlayerMove, PickShape().picked))
+      body: JSON.stringify(PlayGame(event.queryStringParameters.withPlayerMove, PickShape().picked))
     });
   }
 };

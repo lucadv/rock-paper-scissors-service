@@ -19,7 +19,7 @@ describe('Serverless tests', () => {
   describe('play function', () => {
 
     const event = {
-      queryString: {
+      queryStringParameters: {
         withPlayerMove: 'rock'
       }
     };
@@ -75,7 +75,7 @@ describe('Serverless tests', () => {
       after(() => Pickme.prototype.pickOne.restore());
 
       it('should respond with player 2 as winner', () => LambdaTester(PlayHandler)
-        .event({ queryString: { withPlayerMove: 'scissors' } })
+        .event({ queryStringParameters: { withPlayerMove: 'scissors' } })
         .expectResult((res) => {
           const result = JSON.parse(res.body);
           expect(result.winner).to.exist();
@@ -94,7 +94,7 @@ describe('Serverless tests', () => {
       after(() => Pickme.prototype.pickOne.restore());
 
       it('should respond with player 1 as winner', () => LambdaTester(PlayHandler)
-        .event({ queryString: { withPlayerMove: 'paper' } })
+        .event({ queryStringParameters: { withPlayerMove: 'paper' } })
         .expectResult((res) => {
           const result = JSON.parse(res.body);
           expect(result.winner).to.exist();
@@ -113,7 +113,7 @@ describe('Serverless tests', () => {
       after(() => Pickme.prototype.pickOne.restore());
 
       it('should respond with tie', () => LambdaTester(PlayHandler)
-        .event({ queryString: { withPlayerMove: 'paper' } })
+        .event({ queryStringParameters: { withPlayerMove: 'paper' } })
         .expectResult((res) => {
           const result = JSON.parse(res.body);
           expect(result.winner).to.not.exist();
@@ -128,7 +128,7 @@ describe('Serverless tests', () => {
     describe('(missing required query string withPlayerMove)', () => {
 
       it('should callback with a 400 Bad Request', () => LambdaTester(PlayHandler)
-        .event({ queryString: {} })
+        .event({ queryStringParameters: {} })
         .expectResult((res) => {
           expect(res.statusCode).to.equal(400);
           const result = JSON.parse(res.body);
@@ -141,7 +141,7 @@ describe('Serverless tests', () => {
     describe('(invalid value for query string withPlayerMove)', () => {
 
       it('should callback with a 400 Bad Request', () => LambdaTester(PlayHandler)
-        .event({ queryString: { withPlayerMove: 'foo' } })
+        .event({ queryStringParameters: { withPlayerMove: 'foo' } })
         .expectResult((res) => {
           expect(res.statusCode).to.equal(400);
           const result = JSON.parse(res.body);
