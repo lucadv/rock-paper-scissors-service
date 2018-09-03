@@ -32,6 +32,13 @@ describe('Serverless tests', () => {
           expect(res.statusCode).to.equal(200);
         }));
 
+      it('should respond with 200 OK status code', () => LambdaTester(PlayHandler)
+        .event(event)
+        .expectResult((res) => {
+          expect(res.headers['Access-Control-Allow-Origin']).to.equal('*');
+          expect(res.headers['Access-Control-Allow-Credentials']).to.be.true();
+        }));
+
       it('should respond a body in a serialised format', () => LambdaTester(PlayHandler)
         .event(event)
         .expectResult((res) => {

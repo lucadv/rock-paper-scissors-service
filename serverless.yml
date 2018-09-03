@@ -13,3 +13,6 @@ functions:
       - http:
           path: play
           method: get
+          cors:
+            origin: '*'
+            maxAge: 86400
