@@ -4,4 +4,4 @@ COPY package*.json ./
 RUN npm install --only=production
 COPY . .
 CMD [ "npm", "start" ]
-EXPOSE 3000
+EXPOSE 8080
