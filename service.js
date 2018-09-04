@@ -3,7 +3,7 @@ const Routes = require('./server/routes');
 
 const createServer = () => {
   const server = Hapi.server({
-    port: process.env.PORT || 8080,
+    port: process.env.PORT || 5000,
     host: process.env.HOST || 'localhost',
   });
 
