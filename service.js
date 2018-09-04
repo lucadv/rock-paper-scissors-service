@@ -1,4 +1,7 @@
 const Hapi = require('hapi');
+const Vision = require('vision');
+const Inert = require('inert');
+const Lout = require('lout');
 const Routes = require('./server/routes');
 
 const createServer = () => {
@@ -13,6 +16,7 @@ const createServer = () => {
 
 const init = async () => {
   const server = createServer();
+  await server.register([Vision, Inert, Lout]);
   await server.start();
   console.log(`Server running at: ${server.info.uri}`);
 };
