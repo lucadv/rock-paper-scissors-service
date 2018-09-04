@@ -1,5 +1,4 @@
 const Joi = require('joi');
-const PickShape = require('../lib/pickShape');
 const PlayGame = require('../lib/playGame');
 const Validation = require('../lib/validation');
 const ErrorWrapper = require('../lib/errorWrapper');
@@ -26,7 +25,7 @@ module.exports = {
     callback(null, {
       statusCode: 200,
       headers: corsHeaders,
-      body: JSON.stringify(PlayGame(event.queryStringParameters.withPlayerMove, PickShape().picked))
+      body: JSON.stringify(PlayGame(event.queryStringParameters.withPlayerMove))
     });
   }
 };
