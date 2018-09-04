@@ -26,7 +26,8 @@
     "sinon": "^6.1.5"
   },
   "scripts": {
-    "start": "node launch.js"
+    "start": "node launch.js",
+    "test": "./node_modules/.bin/lab -t 100 -v -a code --leaks && ./node_modules/.bin/eslint ."
   },
   "author": "Luca Di Vincenzo <ldivincenzo@gmail.com>"
 }
