@@ -11,6 +11,10 @@ module.exports = [{
       failAction: async (request, h, err) => {
         throw ErrorWrapper(err);
       }
+    },
+    cors: {
+      origin: ['*'],
+      additionalHeaders: ['Access-Control-Allow-Origin', 'Access-Control-Allow-Credentials']
     }
   },
   handler: request => PlayGame(request.query.withPlayerMove)

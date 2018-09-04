@@ -34,7 +34,6 @@ describe('Server tests', () => {
 
         it('should respond with 200 OK status code', async () => {
           const res = await server.inject(options);
-          console.log(res.result);
           expect(res.statusCode).to.equal(200);
         });
 
