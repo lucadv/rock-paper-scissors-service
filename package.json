@@ -1,7 +1,7 @@
 {
   "name": "rock-paper-scissors-service",
   "version": "1.0.0",
-  "description": "A node service which expose a rest endoint to get shapes of the game rock, paper, scissors",
+  "description": "A node service which expose a rest endpoint to play the game rock, paper, scissors",
   "main": "index.js",
   "engines": {
     "node": "8.10.x"
