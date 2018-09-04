@@ -4,6 +4,10 @@ const ErrorWrapper = require('../lib/errorWrapper');
 
 module.exports = [{
   method: 'GET',
+  path: '/',
+  handler: (request, h) => h.redirect('/docs')
+}, {
+  method: 'GET',
   path: '/play',
   options: {
     validate: {
