@@ -72,5 +72,3 @@ docker run -i -p 5000:5000 <image_id>
 ```
 
 Alternatively you can start the service by just run `npm start` (remember to have node 8 installed).
-
-### Deployment

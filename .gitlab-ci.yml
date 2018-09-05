@@ -1,0 +1,44 @@
+image: lucadv/ci-node-8-heroku-aws-serverless
+
+variables: 
+  STAGE: ${STAGE}
+  REGION: ${AWS_DEFAULT_REGION}
+  DOCKER_DRIVER: overlay2
+
+services:
+  - docker:dind
+
+before_script:
+  - heroku --version
+  - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+
+stages:
+  - Unit Test & Lint
+  - Deploy serverless 
+  - Deploy heroku
+
+test:unit&lint:
+  stage: Unit Test & Lint
+  script: 
+    - npm test
+  tags: 
+    - gitlab-ci
+
+deploy:serverless:
+  stage: Deploy to AWS serverless services
+  script: 
+    - serverless deploy
+  tags: 
+    - gitlab-ci
+
+deploy:heroku:
+  stage: Deploy server to heroku
+  script: 
+    - heroku git:remote -a $HEROKU_REPOSITORY_NAME
+    - git push heroku master
+  tags: 
+    - gitlab-ci
+
+
+
+
