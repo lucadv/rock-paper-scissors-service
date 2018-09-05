@@ -3,7 +3,7 @@ const Lab = require('lab');
 const Pickme = require('@lucadv/pickme');
 const Sinon = require('sinon');
 const LambdaTester = require('lambda-tester');
-const PlayHandler = require('../../serverless/handlers').play;
+const PlayHandler = require('../../serverless/functions').play.handler;
 
 // Test shortcuts
 
